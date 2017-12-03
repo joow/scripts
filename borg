@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+# Script used to do a backup on USB disk using Borg.
+
+SCRIPT_PATH=$(realpath ${0})
+WORKING_DIR=$(dirname ${SCRIPT_PATH})
+EXCLUDE_FILE=${WORKING_DIR}/borg.exclude
+ARCHIVE=$(date +%F)
+BACKUP_PATH="/home/benoit/backup/home"
+
+source ${WORKING_DIR}/borg.conf
+
+export BORG_REPO="${BORG_DEVICE}${BACKUP_PATH}"
+
+echo "N'oubliez pas de démarrer le HTPC et de débloquer la clé SSH pour s'y connecter"
+read
+
+# create the backup archive
+borg create --verbose --progress --stats --compression lzma,9 --exclude-from ${EXCLUDE_FILE} ::${ARCHIVE} /home/benoit
+
+# prune backup archives by removing backup archives older than 3 months
+borg prune --verbose --dry-run --stats --keep-within 3m ${BORG_REPO}
+
+# Sync to Hubic using rclone (backup is the name of the remote in rclone, default/backup the folder to copy to).
+rclone -v sync ${RCLONE_SOURCE_NAME}:${BACKUP_PATH} ${RCLONE_DESTINATION_NAME}:${RCLONE_DESTINATION_PATH}

@@ -1,0 +1,23 @@
+# Configuration file for borg script
+
+# SSH device
+export BORG_DEVICE="<user>@<hostname>:"
+
+# Backup path on external device
+export BACKUP_PATH="/home/<user>/backup/home"
+
+# USB device
+# export BORG_DEVICE="/run/media/<user>/BACKUP/home"
+# export BACKUP_PATH=${BORG_DEVICE}
+
+# Passphrase for the repokey
+export BORG_PASSPHRASE=""
+
+# Rclone source remote name
+export RCLONE_SOURCE_NAME="<remote>"
+
+# Rclone destination remote name
+export RCLONE_DESTINATION_NAME="<remote>"
+
+# Rclone cloud path
+export RCLONE_DESTINATION_PATH="<path>"

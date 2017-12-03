@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# Replace /screen by /ebook for better quality, /prepress or /printer for best
+
+INPUT=$(basename "$1")
+BACKUP="${INPUT}.bak"
+echo "shrinking ${INPUT}"
+mv "${INPUT}" "${BACKUP}"
+gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/screen -dNOPAUSE -dQUIET -dBATCH -sOutputFile="${INPUT}" "${BACKUP}"
