@@ -21,3 +21,6 @@ export RCLONE_DESTINATION_NAME="<remote>"
 
 # Rclone cloud path
 export RCLONE_DESTINATION_PATH="<path>"
+
+# Rclone number of file transfers to run in parallel
+export RCLONE_NB_FILE_TRANSFERS=4

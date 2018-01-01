@@ -21,5 +21,5 @@ borg create --verbose --progress --stats --compression lzma,9 --exclude-from ${E
 # prune backup archives by removing backup archives older than 3 months
 borg prune --verbose --dry-run --stats --keep-within 3m ${BORG_REPO}
 
-# Sync to Hubic using rclone (backup is the name of the remote in rclone, default/backup the folder to copy to).
-rclone -v sync ${RCLONE_SOURCE_NAME}:${BACKUP_PATH} ${RCLONE_DESTINATION_NAME}:${RCLONE_DESTINATION_PATH}
+# Sync to cloud using rclone
+rclone -v --transfers ${RCLONE_NB_FILE_TRANSFERS} sync ${RCLONE_SOURCE_NAME}:${BACKUP_PATH} ${RCLONE_DESTINATION_NAME}:${RCLONE_DESTINATION_PATH}
