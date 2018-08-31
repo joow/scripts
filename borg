@@ -16,7 +16,7 @@ echo "N'oubliez pas de démarrer le HTPC et de débloquer la clé SSH pour s'y c
 read
 
 # Create the backup archive
-borg create --verbose --progress --stats --compression lzma,9 --exclude-from ${EXCLUDE_FILE} ::${ARCHIVE} /home/benoit
+borg create --verbose --progress --stats --compression lzma,6 --exclude-from ${EXCLUDE_FILE} ::${ARCHIVE} /home/benoit
 
 # Prune backup archives by keeping the 7 last daily backup archives plus 3 last monthly backup archives
 # Using the options --dry-run --list may be useful to list which backup archives are kept/pruned
