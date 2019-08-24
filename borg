@@ -18,9 +18,16 @@ read
 # Create the backup archive
 borg create --verbose --progress --stats --compression lzma,6 --exclude-from ${EXCLUDE_FILE} ::${ARCHIVE} /home/benoit
 
-# Prune backup archives by keeping the 7 last daily backup archives plus 3 last monthly backup archives
+echo "Vérifier que la clé SSH est toujours active"
+read
+
+# Prune backup archives by keeping the 7 last daily backup archives, plus 4 last weekly archives, plus 12 last monthly
+# archives and finally the last yearly archive (a previously selected archive won't be reselected again).
 # Using the options --dry-run --list may be useful to list which backup archives are kept/pruned
-borg prune --verbose --stats --keep-daily=7 --keep-monthly=3 ${BORG_REPO}
+borg prune --verbose --stats --keep-daily=7 --keep-weekly=4 --keep-monthly=12 --keep-yearly=1 ${BORG_REPO}
+
+echo "Vérifier que la clé SSH est toujours active"
+read
 
 # Sync to cloud using rclone
 rclone -v --transfers ${RCLONE_NB_FILE_TRANSFERS} sync ${RCLONE_SOURCE_NAME}:${BACKUP_PATH} ${RCLONE_DESTINATION_NAME}:${RCLONE_DESTINATION_PATH}
