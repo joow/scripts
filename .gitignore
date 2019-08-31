@@ -1,2 +1,3 @@
 borg.conf
 borg.exclude
+borg.patterns

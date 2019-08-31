@@ -16,7 +16,7 @@ echo "N'oubliez pas de démarrer le HTPC et de débloquer la clé SSH pour s'y c
 read
 
 # Create the backup archive
-borg create --verbose --progress --stats --compression lzma,6 --exclude-from ${EXCLUDE_FILE} ::${ARCHIVE} /home/benoit
+borg create --verbose --progress --stats --compression auto,zstd,22 --patterns-from borg.patterns ::${ARCHIVE}
 
 echo "Vérifier que la clé SSH est toujours active"
 read
