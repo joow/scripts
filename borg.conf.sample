@@ -23,4 +23,5 @@ export RCLONE_DESTINATION_NAME="<remote>"
 export RCLONE_DESTINATION_PATH="<path>"
 
 # Rclone number of file transfers to run in parallel
-export RCLONE_NB_FILE_TRANSFERS=4
+# For Backblaze 2 a high number is recommended (https://rclone.org/b2/#transfers)
+export RCLONE_NB_FILE_TRANSFERS=32
