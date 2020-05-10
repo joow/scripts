@@ -12,8 +12,9 @@ git clone <repository> ~/bin
 
 ### borg
 
-`borg` is a script to make a fully deduplicated and secured backup.  
-[BorgBackup] is used to make a local backup on another device (USB disk or ssh) then [Rclone] is used to sync this backup to a cloud provider (currently [Hubic]).
+`borg` is a script to make a fully deduplicated and secured backup.
+
+[BorgBackup] is used to make a local backup on another device (USB disk or ssh) then [Rclone] is used to sync this backup to a cloud provider (currently [Backblaze B2] and [Scaleway]).
 
 Before running the script you need to create a [BorgBackup] repository :
 ```
@@ -25,12 +26,12 @@ Then you need to create a file `borg.conf` with the repository key passphrase (*
 BORG_REPOKEY_PASSPHRASE="your passphrase"
 ```
 
-You can also create a file `borg.exclude` to exclude paths from backup.
+You can also create a file `borg.patterns` to configure paths to be included in the backup (see `man borg-patterns`).
 
 For [Rclone] you need to create one or two new remotes :
 
   - one sftp remote for your local backup (source)
-  - one cloud remote for the cloud backup (destination)
+  - one cloud remote for for each cloud backup (destination)
 
 #### Checking a backup
 
@@ -69,4 +70,5 @@ MIT © Benoît Giraudou
 
 [BorgBackup]: https://borgbackup.readthedocs.io
 [Rclone]: https://rclone.org/
-[Hubic]: https://hubic.com
+[Backblaze B2]: https://www.backblaze.com/b2/cloud-storage.html
+[Scaleway]: https://www.scaleway.com/fr/object-storage/

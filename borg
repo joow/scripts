@@ -4,7 +4,7 @@
 
 SCRIPT_PATH=$(realpath ${0})
 WORKING_DIR=$(dirname ${SCRIPT_PATH})
-EXCLUDE_FILE=${WORKING_DIR}/borg.exclude
+PATTERNS_FILE=${WORKING_DIR}/borg.patterns
 ARCHIVE=$(date +%F)
 BACKUP_PATH="/home/benoit/backup/home"
 
@@ -20,7 +20,7 @@ function pause {
 pause "N'oubliez pas de démarrer le HTPC et de débloquer la clé SSH pour s'y connecter"
 
 # Create the backup archive
-borg create --verbose --progress --stats --compression auto,zstd,22 --patterns-from borg.patterns ::${ARCHIVE}
+borg create --verbose --progress --stats --compression auto,zstd,22 --patterns-from ${PATTERNS_FILE} ::${ARCHIVE}
 
 pause "Vérifier que la clé SSH est toujours active"
 
