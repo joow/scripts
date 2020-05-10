@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Script used to do a backup on USB disk using Borg.
+# Script used to do a backup using Borg.
 
 SCRIPT_PATH=$(realpath ${0})
 WORKING_DIR=$(dirname ${SCRIPT_PATH})
@@ -12,22 +12,29 @@ source ${WORKING_DIR}/borg.conf
 
 export BORG_REPO="${BORG_DEVICE}${BACKUP_PATH}"
 
-echo "N'oubliez pas de démarrer le HTPC et de débloquer la clé SSH pour s'y connecter"
-read
+function pause {
+    echo "${1}"
+    read
+}
+
+pause "N'oubliez pas de démarrer le HTPC et de débloquer la clé SSH pour s'y connecter"
 
 # Create the backup archive
 borg create --verbose --progress --stats --compression auto,zstd,22 --patterns-from borg.patterns ::${ARCHIVE}
 
-echo "Vérifier que la clé SSH est toujours active"
-read
+pause "Vérifier que la clé SSH est toujours active"
 
 # Prune backup archives by keeping the 7 last daily backup archives, plus 4 last weekly archives, plus 12 last monthly
 # archives and finally the last yearly archive (a previously selected archive won't be reselected again).
 # Using the options --dry-run --list may be useful to list which backup archives are kept/pruned
 borg prune --verbose --stats --keep-daily=7 --keep-weekly=4 --keep-monthly=12 --keep-yearly=1 ${BORG_REPO}
 
-echo "Vérifier que la clé SSH est toujours active"
-read
+pause "Vérifier que la clé SSH est toujours active"
 
-# Sync to cloud using rclone
-rclone -v --transfers ${RCLONE_NB_FILE_TRANSFERS} sync ${RCLONE_SOURCE_NAME}:${BACKUP_PATH} ${RCLONE_DESTINATION_NAME}:${RCLONE_DESTINATION_PATH}
+# Sync to Backblaze B2 using Rclone
+rclone -v --transfers ${RCLONE_NB_FILE_TRANSFERS} sync ${RCLONE_SOURCE_NAME}:${BACKUP_PATH} b2:${B2_BUCKET}
+
+pause "Vérifier que la clé SSH est toujours active"
+
+# Sync to Scaleway using Rclone
+rclone -v sync ${RCLONE_SOURCE_NAME}:${BACKUP_PATH} scaleway:${SCALEWAY_BUCKET}
